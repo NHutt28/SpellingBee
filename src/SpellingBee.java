@@ -22,7 +22,7 @@ import java.util.Scanner;
  * It utilizes recursion to generate the strings, mergesort to sort them, and
  * binary search to find them in a dictionary.
  *
- * @author Zach Blick, [Neil Hutton]
+ * @author Zach Blick, Neil Hutton
  *
  * Written on March 5, 2023 for CS2 @ Menlo School
  *
@@ -40,17 +40,15 @@ public class SpellingBee {
         words = new ArrayList<String>();
     }
 
-    // TODO: generate all possible substrings and permutations of the letters.
+    // generate all possible substrings and permutations of the letters.
     //  Store them all in the ArrayList words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void generate() {
         // Calls recursive function that finds every combination
         gHelper("",letters);
-        sort();
-        checkWords();
-        System.out.println(words);
     }
 
+    // generate helper function
     public void gHelper(String s1, String s2) {
         // Base cases
         // Add the words using all letters
@@ -77,11 +75,14 @@ public class SpellingBee {
     }
     }
 
-    // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
+    //  Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
+        // Just sorts the main array
         words = mergeSort(words);
     }
+
+    // merge sort method
     public ArrayList<String> mergeSort(ArrayList<String> copy)
     {
         // Base case it's already sorted
@@ -95,40 +96,47 @@ public class SpellingBee {
         ArrayList<String> left = new ArrayList<String>(mid);
         ArrayList<String> right = new ArrayList<String>(mid);
         int count = 0;
-        // Fills the two halves with their values
+        // Fills the left half with its values
         while (count < mid)
         {
             left.add(count, copy.get(count));
             count++;
         }
         count = 0;
+        // Fills right half
         while (count + mid < copy.size())
         {
             right.add(count, copy.get(count + mid));
             count++;
         }
+        // Sort each array through recursion
         left = mergeSort(left);
         right = mergeSort(right);
 
-        return merge(new ArrayList<String>(words.size()), left, right);
+        // Merge the two sorted arrays at every stage
+        return merge(new ArrayList<String>(left.size() + right.size()), left, right);
     }
+    // Merges two array list of strings
     public ArrayList<String> merge(ArrayList<String> word, ArrayList<String> left, ArrayList<String> right){
+        // Counters for each array
         int count1 = 0;
         int count2 = 0;
         while (count1 < left.size() && count2 < right.size())
         {
+            // If the left string is worth less than right, add it first
             if (left.get(count1).compareTo(right.get(count2)) <= 0)
             {
                 word.add(count1 + count2, left.get(count1));
                 count1++;
             }
+            // The same but if right is worth less than left
             else
             {
                 word.add(count1 + count2, right.get(count2));
                 count2++;
             }
         }
-        // Adds the rest of the array
+        // Adds the rest of the array if one is longer
         while (count1 < left.size())
         {
             word.add(count1 + count2, left.get(count1));
@@ -155,19 +163,22 @@ public class SpellingBee {
         }
     }
 
-    // TODO: For each word in words, use binary search to see if it is in the dictionary.
+    //  For each word in words, use binary search to see if it is in the dictionary.
     //  If it is not in the dictionary, remove it from words.
     public void checkWords() {
+        // Goes through every word
         for (int i = 0; i < words.size(); i++)
         {
+            // If it isn't found in the dictionary, remove it.
             if(!found(words.get(i)))
             {
                 words.remove(i);
+                // Make sure we don't skip over
                 i--;
             }
         }
     }
-
+    // Checks if string is found in dictionary
     public boolean found(String s)
     {
         int comp;
