@@ -163,6 +163,7 @@ public class SpellingBee {
             if(!found(words.get(i)))
             {
                 words.remove(i);
+                i--;
             }
         }
     }
@@ -174,10 +175,11 @@ public class SpellingBee {
         int low = 0;
         // Last index
         int high = DICTIONARY_SIZE;
-        // Midpoint
-        int mid = (high-low) / 2;
+        // Initial midpoint
+        int mid;
         while(true)
         {
+            mid = low + ((high-low) / 2);
             // Compares the object at middle index with the string
              comp = DICTIONARY[mid].compareTo(s);
              if (comp > 0)
@@ -195,7 +197,7 @@ public class SpellingBee {
                  // If they're equal you found it
                  return true;
              }
-             if (high - low == 0)
+             if (high < low)
              {
                  // If you can't find the word
                  break;
