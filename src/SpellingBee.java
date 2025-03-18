@@ -46,6 +46,8 @@ public class SpellingBee {
     public void generate() {
         // Calls recursive function that finds every combination
         gHelper("",letters);
+        sort();
+        checkWords();
         System.out.println(words);
     }
 
@@ -78,10 +80,67 @@ public class SpellingBee {
     // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
-        // YOUR CODE HERE
+        words = mergeSort(words);
     }
-    public void sHelper(ArrayList<String> word, int middle, int left, int right){
+    public ArrayList<String> mergeSort(ArrayList<String> copy)
+    {
+        // Base case it's already sorted
+        if(copy.size() <= 1)
+        {
+            return copy;
+        }
+        // Middle of array
+        int mid = (copy.size() / 2);
+        // Initializes the two halves
+        ArrayList<String> left = new ArrayList<String>(mid);
+        ArrayList<String> right = new ArrayList<String>(mid);
+        int count = 0;
+        // Fills the two halves with their values
+        while (count < mid)
+        {
+            left.add(count, copy.get(count));
+            count++;
+        }
+        count = 0;
+        while (count + mid < copy.size())
+        {
+            right.add(count, copy.get(count + mid));
+            count++;
+        }
+        left = mergeSort(left);
+        right = mergeSort(right);
 
+        return merge(new ArrayList<String>(words.size()), left, right);
+    }
+    public ArrayList<String> merge(ArrayList<String> word, ArrayList<String> left, ArrayList<String> right){
+        int count1 = 0;
+        int count2 = 0;
+        while (count1 < left.size() && count2 < right.size())
+        {
+            if (left.get(count1).compareTo(right.get(count2)) <= 0)
+            {
+                word.add(count1 + count2, left.get(count1));
+                count1++;
+            }
+            else
+            {
+                word.add(count1 + count2, right.get(count2));
+                count2++;
+            }
+        }
+        // Adds the rest of the array
+        while (count1 < left.size())
+        {
+            word.add(count1 + count2, left.get(count1));
+            count1++;
+        }
+        while (count2 < right.size())
+        {
+            word.add(count1 + count2, right.get(count2));
+            count2++;
+        }
+        // Returns the final product
+        return word;
     }
 
     // Removes duplicates from the sorted list.
