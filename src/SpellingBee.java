@@ -99,9 +99,51 @@ public class SpellingBee {
     // TODO: For each word in words, use binary search to see if it is in the dictionary.
     //  If it is not in the dictionary, remove it from words.
     public void checkWords() {
-        // YOUR CODE HERE
+        for (int i = 0; i < words.size(); i++)
+        {
+            if(!found(words.get(i)))
+            {
+                words.remove(i);
+            }
+        }
     }
 
+    public boolean found(String s)
+    {
+        int comp;
+        // First index
+        int low = 0;
+        // Last index
+        int high = DICTIONARY_SIZE;
+        // Midpoint
+        int mid = (high-low) / 2;
+        while(true)
+        {
+            // Compares the object at middle index with the string
+             comp = DICTIONARY[mid].compareTo(s);
+             if (comp > 0)
+             {
+                 // Looks to the left side
+                  high = mid - 1;
+             }
+             else if (comp < 0)
+             {
+                 // Looks to the right side
+                 low = mid + 1;
+             }
+             else
+             {
+                 // If they're equal you found it
+                 return true;
+             }
+             if (high - low == 0)
+             {
+                 // If you can't find the word
+                 break;
+             }
+        }
+        return false;
+    }
     // Prints all valid words to wordList.txt
     public void printWords() throws IOException {
         File wordFile = new File("Resources/wordList.txt");
