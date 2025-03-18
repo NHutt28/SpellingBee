@@ -63,12 +63,7 @@ public class SpellingBee {
         // Goes through each letter and tries every combo
         for (int i = 1; i < s2.length() + 1; i++)
         {
-            // If index is less than or equal to one, just take the first letter off
-            if (i <= 1) {
-                gHelper(s1 + s2.substring(i - 1, i), s2.substring(i));
-            }
-            // Else add the rest of the part that was skipped over
-            else
+            // Go through each permutation
             {
                 gHelper(s1 + s2.substring(i - 1, i), s2.substring(0,i-1) + s2.substring(i));
             }
