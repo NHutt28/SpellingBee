@@ -22,7 +22,7 @@ import java.util.Scanner;
  * It utilizes recursion to generate the strings, mergesort to sort them, and
  * binary search to find them in a dictionary.
  *
- * @author Zach Blick, [ADD YOUR NAME HERE]
+ * @author Zach Blick, [Neil Hutton]
  *
  * Written on March 5, 2023 for CS2 @ Menlo School
  *
@@ -44,13 +44,44 @@ public class SpellingBee {
     //  Store them all in the ArrayList words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void generate() {
-        // YOUR CODE HERE — Call your recursive method!
+        // Calls recursive function that finds every combination
+        gHelper("",letters);
+        System.out.println(words);
+    }
+
+    public void gHelper(String s1, String s2) {
+        // Base cases
+        // Add the words using all letters
+        if (s2.length() < 1) {
+            words.add(s1);
+            return;
+        }
+        // Add the word at every step
+        if (!(s1.isEmpty())) {
+            words.add(s1);
+        }
+        // Goes through each letter and tries every combo
+        for (int i = 1; i < s2.length() + 1; i++)
+        {
+            // If index is less than or equal to one, just take the first letter off
+            if (i <= 1) {
+                gHelper(s1 + s2.substring(i - 1, i), s2.substring(i));
+            }
+            // Else add the rest of the part that was skipped over
+            else
+            {
+                gHelper(s1 + s2.substring(i - 1, i), s2.substring(0,i-1) + s2.substring(i));
+            }
+    }
     }
 
     // TODO: Apply mergesort to sort all words. Do this by calling ANOTHER method
     //  that will find the substrings recursively.
     public void sort() {
         // YOUR CODE HERE
+    }
+    public void sHelper(ArrayList<String> word, int middle, int left, int right){
+
     }
 
     // Removes duplicates from the sorted list.
